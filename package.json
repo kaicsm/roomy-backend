@@ -8,6 +8,7 @@
   "dependencies": {
     "@elysiajs/jwt": "^1.4.0",
     "@elysiajs/openapi": "^1.4.11",
+    "@elysiajs/websocket": "^0.2.8",
     "@types/redis": "^4.0.11",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
