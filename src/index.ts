@@ -31,16 +31,19 @@ const PORT = process.env.PORT!;
 
 new Elysia({ prefix: "/api" })
   .use(cors())
-  .use(openapi({
-    documentation: {
-      info: {
-        title: "Shogun API",
-        version: "1.0.0",
+  .use(
+    openapi({
+      documentation: {
+        info: {
+          title: "Roomy API",
+          version: "1.0.0",
+        },
       },
-    },
-  }))
+    }),
+  )
   .group("/v1", (group) =>
     group.use(AuthController).use(RoomController).use(UserController),
-  ).listen(PORT, () => {
+  )
+  .listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}/api`);
   });
