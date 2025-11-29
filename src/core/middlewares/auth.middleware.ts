@@ -11,11 +11,14 @@ export const authMiddleware = new Elysia()
   )
   .macro({
     auth: {
-      async resolve({ jwt, cookie, status, headers }) {
-        let token = cookie.authToken?.value as string | undefined;
+      async resolve({ jwt, cookie, status, headers, query }) {
+        let token: string | undefined;
 
-        // If there's no token in the cookie, try the Authorization header as a fallback
-        if (!token) {
+        if (query?.token) {
+          token = query.token as string;
+        } else if (cookie.authToken?.value) {
+          token = cookie.authToken.value as string;
+        } else {
           const rawAuth = (headers?.authorization ?? headers?.Authorization) as
             | string
             | undefined;

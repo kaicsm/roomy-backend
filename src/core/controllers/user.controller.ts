@@ -19,6 +19,13 @@ export const UserController = new Elysia({ prefix: "/users" })
     },
   )
   .get(
+    "/me",
+    async ({ userService, payload }) => {
+      return await userService.findUserById(payload.sub);
+    },
+    { auth: true },
+  )
+  .get(
     "/",
     async ({ query, userService }) => {
       return await userService.findUsersByIds(query.ids!);

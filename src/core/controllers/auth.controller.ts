@@ -8,7 +8,7 @@ export const AuthController = new Elysia({
   prefix: "/auth",
   cookie: {
     secrets: process.env.COOKIE_SECRET!,
-    sign: ["session"],
+    sign: ["authToken"],
   },
 })
   .decorate("authService", new AuthService(new UserRepository()))
@@ -85,4 +85,8 @@ export const AuthController = new Elysia({
         }),
       }),
     },
-  );
+  )
+  .post("/logout", async ({ cookie: { authToken } }) => {
+    authToken.remove();
+    return { message: "Logout successfully" };
+  });
