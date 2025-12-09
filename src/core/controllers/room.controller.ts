@@ -28,6 +28,9 @@ export const RoomController = new Elysia({ prefix: "/rooms" })
       return roomService.createRoom(
         payload.sub,
         body.name,
+        body.mediaUrl,
+        body.mediaType,
+        body.isPlaying,
         body.isPublic,
         body.maxParticipants,
       );
@@ -35,6 +38,9 @@ export const RoomController = new Elysia({ prefix: "/rooms" })
     {
       body: t.Object({
         name: t.String({ minLength: 3 }),
+        mediaUrl: t.Optional(t.String()),
+        mediaType: t.Optional(t.String()),
+        isPlaying: t.Optional(t.Boolean()),
         isPublic: t.Optional(t.Boolean()),
         maxParticipants: t.Optional(t.Number({ minimum: 2, maximum: 50 })),
       }),

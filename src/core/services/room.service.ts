@@ -13,11 +13,14 @@ import type {
 } from "../domain/room.types";
 
 export class RoomService {
-  constructor(private roomRepo: RoomRepository) { }
+  constructor(private roomRepo: RoomRepository) {}
 
   async createRoom(
     hostId: string,
     name: string,
+    mediaUrl: string = "",
+    mediaType: string = "",
+    isPlaying: boolean = false,
     isPublic = true,
     maxParticipants = 10,
   ) {
@@ -36,9 +39,9 @@ export class RoomService {
     await this.roomRepo.addMember(roomId, hostId);
 
     const initialState: PlaybackState = {
-      mediaUrl: "",
-      mediaType: "",
-      isPlaying: false,
+      mediaUrl,
+      mediaType,
+      isPlaying,
       currentTime: 0,
       playbackSpeed: 1.0,
       lastUpdatedBy: hostId,
