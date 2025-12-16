@@ -15,6 +15,27 @@ import type {
 export class RoomService {
   constructor(private roomRepo: RoomRepository) {}
 
+  private calculateCurrentTime(state: PlaybackState): number {
+    if (!state.isPlaying) {
+      return state.currentTime;
+    }
+
+    const lastUpdatedTime = new Date(state.lastUpdated).getTime();
+    const now = Date.now();
+    const elapsedMs = now - lastUpdatedTime;
+
+    const calculatedTime = state.currentTime + elapsedMs * state.playbackSpeed;
+
+    return Math.round(calculatedTime);
+  }
+
+  private withCalculatedTime(state: PlaybackState): PlaybackState {
+    return {
+      ...state,
+      currentTime: this.calculateCurrentTime(state),
+    };
+  }
+
   async createRoom(
     hostId: string,
     name: string,
@@ -59,7 +80,12 @@ export class RoomService {
     }
 
     const members = await this.roomRepo.getMembers(roomId);
-    const playbackState = await this.roomRepo.getPlaybackState(roomId);
+
+    let playbackState = await this.roomRepo.getPlaybackState(roomId);
+
+    if (playbackState) {
+      playbackState = this.withCalculatedTime(playbackState);
+    }
 
     const state: RoomFullStatePayload = {
       roomId,
@@ -120,9 +146,13 @@ export class RoomService {
       throw new Error("You are not in this room");
     }
 
-    const current = await this.roomRepo.getPlaybackState(roomId);
+    let current = await this.roomRepo.getPlaybackState(roomId);
     if (!current) {
       throw new Error("Playback state not found");
+    }
+
+    if (!updates.currentTime && current.isPlaying) {
+      current = this.withCalculatedTime(current);
     }
 
     const newState: PlaybackState = {
@@ -142,7 +172,7 @@ export class RoomService {
     if (!state) {
       throw new Error("Playback state not found");
     }
-    return state;
+    return this.calculateCurrentTime(state);
   }
 
   async listActiveRooms() {
