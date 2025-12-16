@@ -2,7 +2,7 @@ import { redis } from "../../infra/cache/redis.config";
 import type { PlaybackState, RoomMetadata } from "../domain/room.types";
 
 export class RoomRepository {
-  private ROOM_TTL_SECONDS = 3600;
+  private ROOM_TTL_SECONDS = 60; // 1 minute
 
   async refreshRoomTTL(roomId: string): Promise<void> {
     const keys = [
