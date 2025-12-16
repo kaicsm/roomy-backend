@@ -42,5 +42,4 @@ package-lock.json
 **/*.bun
 
 .env
-/drizzle
 .zed
