@@ -1,6 +1,6 @@
 # Roomy
 
-Roomy is a real-time media synchronization service that lets you watch videos or even listen music together with your friends, no matter where they are. This is the backend API for Roomy.
+Roomy is a real-time media synchronization service that lets you watch videos or even listen to music together with your friends, no matter where they are. This is the backend API for Roomy.
 
 # Getting Started
 
