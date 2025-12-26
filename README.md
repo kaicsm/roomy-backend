@@ -4,6 +4,8 @@ Roomy is a real-time media synchronization service that lets you watch videos or
 
 # Getting Started
 
+You'll need bun and docker installed on your system.
+
 ### Clone the repository and install its dependencies:
 
 ```sh
